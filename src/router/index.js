@@ -13,6 +13,11 @@ const router = createRouter({
       name: 'Event',
       component: () => import('../views/EventView.vue'),
     },
+    {
+      path: '/confirm/:token',
+      name: 'Confirm',
+      component: () => import('../views/ConfirmView.vue'),
+    },
   ],
 })
 

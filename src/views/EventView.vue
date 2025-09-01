@@ -54,40 +54,60 @@
           Register for this event
         </h2>
 
+        <div v-if="success" class="mb-6">
+          <div
+            class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 p-6 rounded-lg animate-fade-in"
+          >
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <BadgeCheck class="h-8 w-8 text-green-400" />
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-semibold text-green-800 tracking-wide">
+                  Registration Successful!
+                </h3>
+                <p class="text-green-700 mt-1">
+                  Thank you for registering! You will receive a confirmation email shortly.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div>
           <input
+            v-model="formData.name"
             type="text"
             placeholder="Full name"
             class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
-          <!-- <div v-if="errors.email" class="text-red-500 text-sm mt-1">
-            {{ errors.email[0] }}
-          </div> -->
+          <div v-if="registrationErrors.name" class="text-red-500 text-sm mt-1">
+            {{ registrationErrors.name[0] }}
+          </div>
         </div>
         <div>
           <input
+            v-model="formData.email"
             type="email"
             placeholder="E-mail"
             class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
-          <!-- <div v-if="errors.email" class="text-red-500 text-sm mt-1">
-            {{ errors.email[0] }}
-          </div> -->
+          <div v-if="registrationErrors.email" class="text-red-500 text-sm mt-1">
+            {{ registrationErrors.email[0] }}
+          </div>
         </div>
         <div>
           <input
+            v-model="formData.phone"
             type="tel"
             placeholder="Phone number"
             class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
-          <!-- <div v-if="errors.phone" class="text-red-500 text-sm mt-1">
-            {{ errors.phone[0] }}
-          </div> -->
         </div>
 
         <div>
           <label class="inline-flex items-center gap-3">
-            <input type="checkbox" class="size-8 rounded" />
+            <input v-model="formData.agree" type="checkbox" class="size-8 rounded" />
             <span class="font-medium text-gray-700">
               I agree to the processing of my personal data (name, email, phone number) by RafEvent
               for the purpose of event registration, communication regarding the event, and
@@ -96,7 +116,9 @@
               <a href="mailto:info@rafevent.com" class="text-blue-500">info@rafevent.com</a>.</span
             >
           </label>
-          <!-- <div v-if="errors.agree" class="text-red-500 text-sm mt-1">{{ errors.agree[0] }}</div> -->
+          <div v-if="registrationErrors.agree" class="text-red-500 text-sm mt-1">
+            {{ registrationErrors.agree[0] }}
+          </div>
         </div>
 
         <div>
@@ -108,18 +130,32 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useEvents } from '@/composables/useEvents.js'
-import { Calendar, Clock, Users, MapPin } from 'lucide-vue-next'
+import { useRegistrations } from '@/composables/useRegistrations.js'
+import { Calendar, Clock, Users, MapPin, BadgeCheck } from 'lucide-vue-next'
 import MainButton from '@/components/MainButton.vue'
-
 import MainLayout from '@/layouts/MainLayout.vue'
 
 const route = useRoute()
 const eventId = computed(() => route.params.id)
 
-const { currentEvent, loading, error, fetchEvent } = useEvents()
+const { currentEvent, fetchEvent } = useEvents()
+const {
+  registerForEvent,
+  loading: registrationLoading,
+  errors: registrationErrors,
+} = useRegistrations()
+const success = ref(false)
+
+const formData = reactive({
+  event_id: eventId.value,
+  name: '',
+  email: '',
+  phone: '',
+  agree: false,
+})
 
 onMounted(async () => {
   if (eventId.value) {
@@ -132,7 +168,18 @@ onMounted(async () => {
 })
 
 const signUp = async () => {
-  console.log('Test')
+  try {
+    await registerForEvent(formData)
+
+    // Success
+    formData.name = ''
+    formData.email = ''
+    formData.phone = ''
+    formData.agree = false
+    success.value = true
+  } catch (errors) {
+    console.error('Registration failed:', errors)
+  }
 }
 </script>
 
@@ -197,5 +244,20 @@ const signUp = async () => {
 .wysiwyg-content figure a {
   color: #aaa;
   text-decoration: underline;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
 }
 </style>
