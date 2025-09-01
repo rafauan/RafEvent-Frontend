@@ -13,7 +13,7 @@
           <span class="flex items-center gap-2 mb-1">
             <Calendar :size="20" />
             <span class="font-semibold">Start date:</span>
-            <span class="text-gray-700">{{ currentEvent?.start_datetime }}</span>
+            <span class="text-gray-700">{{ formattedStartDate }}</span>
           </span>
           <span class="flex items-center gap-2 mb-1">
             <Clock :size="20" />
@@ -93,7 +93,7 @@
             class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
           <div v-if="registrationErrors.email" class="text-red-500 text-sm mt-1">
-            {{ registrationErrors.email[0] }}
+            {{ Array.isArray(registrationErrors.email) ? registrationErrors.email[0] : registrationErrors.email }}
           </div>
         </div>
         <div>
@@ -135,6 +135,7 @@ import { useRoute } from 'vue-router'
 import { useEvents } from '@/composables/useEvents.js'
 import { useRegistrations } from '@/composables/useRegistrations.js'
 import { Calendar, Clock, Users, MapPin, BadgeCheck } from 'lucide-vue-next'
+import { format } from 'date-fns'
 import MainButton from '@/components/MainButton.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 
@@ -144,7 +145,6 @@ const eventId = computed(() => route.params.id)
 const { currentEvent, fetchEvent } = useEvents()
 const {
   registerForEvent,
-  loading: registrationLoading,
   errors: registrationErrors,
 } = useRegistrations()
 const success = ref(false)
@@ -165,6 +165,11 @@ onMounted(async () => {
       console.error('Error fetching event:', error)
     }
   }
+})
+
+const formattedStartDate = computed(() => {
+  if (!currentEvent.value?.start_datetime) return ''
+  return format(new Date(currentEvent.value.start_datetime), 'MMMM dd, yyyy HH:mm')
 })
 
 const signUp = async () => {
