@@ -1,8 +1,8 @@
 <template>
   <MainLayout>
     <div>
-      <h2 class="text-2xl font-bold tracking-wider">Welcome to RafEvent</h2>
-      <p>Your one-stop solution for event management</p>
+      <h2 class="text-2xl font-bold tracking-wider dark:text-white">Welcome to RafEvent</h2>
+      <p class="dark:text-white">Your one-stop solution for event management</p>
     </div>
 
     <div class="flex justify-between gap-4">
@@ -10,14 +10,14 @@
         v-model="searchQuery"
         type="text"
         placeholder="Search events..."
-        class="mt-4 p-2 border-2 w-full focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
+        class="mt-4 p-2 border-2 w-full dark:border-gray-600 dark:text-white dark:bg-gray-800 dark:placeholder-gray-400 focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
       />
       <select
         v-model="selectedCategory"
-        class="mt-4 p-2 border-2 w-full focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
+        class="mt-4 p-2 border-2 w-full dark:border-gray-600 dark:text-white dark:bg-gray-800 focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
       >
-        <option value="">Select Category</option>
-        <option v-for="category in categories" :key="category.id" :value="category.name">
+        <option value="" class="dark:bg-gray-800 dark:text-white">Select Category</option>
+        <option v-for="category in categories" :key="category.id" :value="category.name" class="dark:bg-gray-800 dark:text-white">
           {{ category.name }}
         </option>
       </select>
@@ -36,7 +36,7 @@
         <div class="mx-auto h-24 w-24 text-gray-400 mb-4">
           <CalendarX2 class="w-full h-full" color="#DDD" :stroke-width="1.25" />
         </div>
-        <h3 class="text-2xl font-semibold text-gray-900 mb-1">No events found</h3>
+        <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-200 mb-1">No events found</h3>
         <p class="text-gray-400">Try adjusting your search or filter settings</p>
       </div>
     </div>

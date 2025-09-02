@@ -5,19 +5,19 @@
         
         <!-- Loading state -->
         <div v-if="loading" class="space-y-6">
-          <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-gray-900 mx-auto"></div>
-          <h2 class="text-3xl font-bold tracking-wider text-gray-900">Confirming Registration...</h2>
-          <p class="text-gray-600">Please wait while we verify your token.</p>
+          <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-gray-900 dark:border-gray-100 mx-auto"></div>
+          <h2 class="text-3xl font-bold tracking-wider text-gray-900 dark:text-white">Confirming Registration...</h2>
+          <p class="text-gray-600 dark:text-gray-400">Please wait while we verify your token.</p>
         </div>
 
         <!-- Success state -->
         <div v-else-if="confirmed" class="space-y-6">
-          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100">
-            <CheckCircle class="h-12 w-12 text-green-600" />
+          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 dark:bg-green-900">
+            <CheckCircle class="h-12 w-12 text-green-600 dark:text-green-400" />
           </div>
           <div class="space-y-2">
-            <h2 class="text-4xl font-bold tracking-wider text-gray-900">Registration Confirmed!</h2>
-            <p class="text-lg text-gray-600">Your event participation has been successfully confirmed.</p>
+            <h2 class="text-4xl font-bold tracking-wider text-gray-900 dark:text-white">Registration Confirmed!</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">Your event participation has been successfully confirmed.</p>
           </div>
           <div class="pt-4">
             <MainButton 
@@ -29,12 +29,12 @@
 
         <!-- Error state -->
         <div v-else class="space-y-6">
-          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100">
-            <XCircle class="h-12 w-12 text-red-600" />
+          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900">
+            <XCircle class="h-12 w-12 text-red-600 dark:text-red-400" />
           </div>
           <div class="space-y-2">
-            <h2 class="text-4xl font-bold tracking-wider text-gray-900">Confirmation Failed</h2>
-            <p class="text-lg text-gray-600">{{ errorMessage || 'An error occurred while confirming your registration.' }}</p>
+            <h2 class="text-4xl font-bold tracking-wider text-gray-900 dark:text-white">Confirmation Failed</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">{{ errorMessage || 'An error occurred while confirming your registration.' }}</p>
           </div>
           <div class="pt-4">
               <MainButton
@@ -85,6 +85,10 @@ const confirmToken = async () => {
       errorMessage.value = errors.value || 'Failed to confirm registration. Please try again later.'
     }
   }
+}
+
+const goHome = () => {
+  router.push({ name: 'Home' })
 }
 
 

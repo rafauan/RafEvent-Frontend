@@ -1,7 +1,7 @@
 <template>
   <MainLayout>
     <div>
-      <h1 class="text-2xl font-bold tracking-widest text-black uppercase">
+      <h1 class="text-2xl font-bold tracking-widest text-black uppercase dark:text-white">
         {{ currentEvent?.name }}
       </h1>
       <div>
@@ -9,30 +9,30 @@
           :src="currentEvent?.image"
           class="w-full h-64 object-cover mt-4 rounded-lg shadow-lg"
         />
-        <div class="pt-8">
+        <div class="pt-8 dark:text-white">
           <span class="flex items-center gap-2 mb-1">
             <Calendar :size="20" />
             <span class="font-semibold">Start date:</span>
-            <span class="text-gray-700">{{ formattedStartDate }}</span>
+            <span class="text-gray-700 dark:text-gray-200">{{ formattedStartDate }}</span>
           </span>
           <span class="flex items-center gap-2 mb-1">
             <Clock :size="20" />
             <span class="font-semibold">Duration:</span>
-            <span class="text-gray-700">{{ currentEvent?.duration }} minutes</span>
+            <span class="text-gray-700 dark:text-gray-200">{{ currentEvent?.duration }} minutes</span>
           </span>
           <span class="flex items-center gap-2 mb-1">
             <Users :size="20" />
             <span class="font-semibold">Capacity:</span>
-            <span class="text-gray-700">{{ currentEvent?.capacity }}</span>
+            <span class="text-gray-700 dark:text-gray-200">{{ currentEvent?.capacity }}</span>
           </span>
           <span class="flex items-center gap-2">
             <MapPin :size="20" />
             <span class="font-semibold">Location:</span>
-            <span class="text-gray-700">{{ currentEvent?.location }}</span>
+            <span class="text-gray-700 dark:text-gray-200">{{ currentEvent?.location }}</span>
           </span>
         </div>
         <div
-          class="mt-8 prose prose-lg max-w-none wysiwyg-content"
+          class="mt-8 prose prose-lg max-w-none wysiwyg-content dark:text-white"
           v-html="currentEvent?.description"
         ></div>
       </div>
@@ -40,7 +40,7 @@
   </MainLayout>
 
   <!-- Registration Form -->
-  <div class="bg-gray-100 w-full">
+  <div class="bg-gray-100 dark:bg-gray-900 w-full">
     <div class="container mx-auto max-w-7xl py-8 px-6">
       <form class="space-y-4" @submit.prevent="signUp">
         <!-- <div
@@ -50,23 +50,23 @@
           {{ form.errors.capacity || errors.capacity }}
         </div> -->
 
-        <h2 class="text-2xl font-bold tracking-widest text-black uppercase">
+        <h2 class="text-2xl font-bold tracking-widest text-black dark:text-gray-200 uppercase">
           Register for this event
         </h2>
 
         <div v-if="success" class="mb-6">
           <div
-            class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 p-6 rounded-lg animate-fade-in"
+            class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900 border-l-4 border-green-400 p-6 rounded-lg animate-fade-in"
           >
             <div class="flex items-center">
               <div class="flex-shrink-0">
                 <BadgeCheck class="h-8 w-8 text-green-400" />
               </div>
               <div class="ml-4">
-                <h3 class="text-lg font-semibold text-green-800 tracking-wide">
+                <h3 class="text-lg font-semibold text-green-800 dark:text-green-200 tracking-wide">
                   Registration Successful!
                 </h3>
-                <p class="text-green-700 mt-1">
+                <p class="text-green-700 dark:text-green-300 mt-1">
                   Thank you for registering! You will receive a confirmation email shortly.
                 </p>
               </div>
@@ -79,7 +79,7 @@
             v-model="formData.name"
             type="text"
             placeholder="Full name"
-            class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
+            class="p-2 border-2 w-full bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
           <div v-if="registrationErrors.name" class="text-red-500 text-sm mt-1">
             {{ registrationErrors.name[0] }}
@@ -90,7 +90,7 @@
             v-model="formData.email"
             type="email"
             placeholder="E-mail"
-            class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
+            class="p-2 border-2 w-full bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
           <div v-if="registrationErrors.email" class="text-red-500 text-sm mt-1">
             {{ Array.isArray(registrationErrors.email) ? registrationErrors.email[0] : registrationErrors.email }}
@@ -101,19 +101,19 @@
             v-model="formData.phone"
             type="tel"
             placeholder="Phone number"
-            class="p-2 border-2 w-full bg-white focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
+            class="p-2 border-2 w-full bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:-translate-x-1 focus:-translate-y-1 transition-transform duration-300"
           />
         </div>
 
         <div>
           <label class="inline-flex items-center gap-3">
-            <input v-model="formData.agree" type="checkbox" class="size-8 rounded" />
-            <span class="font-medium text-gray-700">
+            <input v-model="formData.agree" type="checkbox" class="size-8 rounded dark:bg-gray-800 dark:border-gray-600" />
+            <span class="font-medium text-gray-700 dark:text-gray-300">
               I agree to the processing of my personal data (name, email, phone number) by RafEvent
               for the purpose of event registration, communication regarding the event, and
               providing event-related services. I understand that I can withdraw my consent at any
               time by contacting us at
-              <a href="mailto:info@rafevent.com" class="text-blue-500">info@rafevent.com</a>.</span
+              <a href="mailto:info@rafevent.com" class="text-blue-500 dark:text-blue-400">info@rafevent.com</a>.</span
             >
           </label>
           <div v-if="registrationErrors.agree" class="text-red-500 text-sm mt-1">
